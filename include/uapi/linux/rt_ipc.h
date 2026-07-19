@@ -111,8 +111,9 @@ struct rt_ipc_call {
 };
 
 /*
- * ioctl command space.  '9' historically clashes least with existing users;
- * the number range 0x00-0x0f is reserved for rt_ipc.
+ * ioctl command space.  Magic '9' is reserved for rt_ipc in
+ * Documentation/userspace-api/ioctl/ioctl-number.rst; the number range
+ * 0x00-0x0f belongs to rt_ipc.
  */
 #define RT_IPC_IOC			'9'
 
