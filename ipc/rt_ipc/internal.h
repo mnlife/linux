@@ -12,8 +12,8 @@ struct file;
 
 /* object.c: endpoint / connection lifetime ------------------------------- */
 
-struct rt_ipc_endpoint *rt_ipc_endpoint_create(
-		const struct rt_ipc_endpoint_create *req);
+struct rt_ipc_endpoint *
+rt_ipc_endpoint_create(const struct rt_ipc_endpoint_create *req);
 void rt_ipc_endpoint_get(struct rt_ipc_endpoint *ep);
 void rt_ipc_endpoint_put(struct rt_ipc_endpoint *ep);
 void rt_ipc_endpoint_shutdown(struct rt_ipc_endpoint *ep);

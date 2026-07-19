@@ -47,7 +47,7 @@ int rt_ipc_arch_enter_server(struct rt_ipc_frame *frame,
 	struct rt_ipc_arch_regs *regs;
 	struct pt_regs *uregs = current_pt_regs();
 
-	regs = kzalloc(sizeof(*regs), GFP_KERNEL);
+	regs = kzalloc_obj(*regs);
 	if (!regs)
 		return -ENOMEM;
 

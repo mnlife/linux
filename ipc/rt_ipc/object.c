@@ -27,6 +27,7 @@
 static atomic64_t rt_ipc_id_counter = ATOMIC64_INIT(0);
 
 LIST_HEAD(rt_ipc_endpoint_list);
+/* Serialises the global endpoint registry used by debugfs/statistics. */
 DEFINE_MUTEX(rt_ipc_endpoint_list_lock);
 
 u64 rt_ipc_alloc_id(void)
@@ -61,7 +62,7 @@ struct rt_ipc_task *rt_ipc_task_prepare(void)
 	if (rt)
 		return rt;
 
-	rt = kzalloc(sizeof(*rt), GFP_KERNEL);
+	rt = kzalloc_obj(*rt);
 	if (!rt)
 		return NULL;
 
@@ -154,7 +155,7 @@ rt_ipc_endpoint_create(const struct rt_ipc_endpoint_create *req)
 	if (!current->mm)
 		return ERR_PTR(-EINVAL);
 
-	ep = kzalloc(sizeof(*ep), GFP_KERNEL);
+	ep = kzalloc_obj(*ep);
 	if (!ep)
 		return ERR_PTR(-ENOMEM);
 
@@ -247,7 +248,7 @@ struct rt_ipc_connection *rt_ipc_connection_create(struct rt_ipc_endpoint *ep)
 	}
 	raw_spin_unlock(&ep->lock);
 
-	conn = kzalloc(sizeof(*conn), GFP_KERNEL);
+	conn = kzalloc_obj(*conn);
 	if (!conn)
 		return ERR_PTR(-ENOMEM);
 
