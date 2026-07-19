@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# rt_ipc: real-time IPC based on the migrating-thread model.
+#
+
+# Architectures implement the partial-context-switch abstraction layer
+# (rt_ipc_arch_enter_server()/rt_ipc_arch_return()) and select this symbol.
+config HAVE_RT_IPC
+	bool
+
+config RT_IPC
+	bool "Real-time IPC (migrating-thread model)"
+	depends on HAVE_RT_IPC
+	depends on MMU
+	select ANON_INODES
+	help
+	  rt_ipc is a high-performance, real-time inter-process communication
+	  mechanism built on the migrating-thread model: a single thread of
+	  execution transitions into the server address space to run the
+	  server's entry passively, instead of waking a separate server thread
+	  and rescheduling.  This avoids a full context switch and lets the
+	  server code inherit the client's scheduling attributes in place,
+	  eliminating the priority-inversion and wakeup-latency costs of the
+	  classic static thread model.
+
+	  The control interface is exposed through /dev/rt_ipc.  When this
+	  option is disabled there is zero overhead on scheduling and syscall
+	  hot paths.
+
+	  If unsure, say N.
+
+config RT_IPC_DEBUGFS
+	bool "Expose rt_ipc state via debugfs"
+	depends on RT_IPC && DEBUG_FS
+	default RT_IPC
+	help
+	  Export live endpoints, connections, nesting depth and per-endpoint
+	  in-flight counters under /sys/kernel/debug/rt_ipc for introspection.
+
+	  If unsure, say Y.
