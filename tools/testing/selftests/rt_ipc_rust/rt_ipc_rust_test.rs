@@ -134,7 +134,10 @@ fn call_ioc() -> c_ulong {
 extern "C" fn server_entry() {}
 
 // Backing store for the per-call server stack region handed to the endpoint.
-static mut SERVER_STACK: [u8; 64 * 1024] = [0; 64 * 1024];
+// Only its address and size are passed to the kernel; the bytes are never
+// touched here (the call path returns EOPNOTSUPP before any switch), so an
+// immutable static is sufficient and avoids `static mut`.
+static SERVER_STACK: [u8; 64 * 1024] = [0; 64 * 1024];
 
 /// Outcome of a single test, mirroring the kselftest PASS/FAIL/SKIP states.
 enum Outcome {
