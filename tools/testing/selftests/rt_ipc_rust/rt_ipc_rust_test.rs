@@ -137,7 +137,8 @@ extern "C" fn server_entry() {}
 // Only its address and size are passed to the kernel; the bytes are never
 // touched here (the call path returns EOPNOTSUPP before any switch), so an
 // immutable static is sufficient and avoids `static mut`.
-static SERVER_STACK: [u8; 64 * 1024] = [0; 64 * 1024];
+const SERVER_STACK_SIZE: usize = 64 * 1024;
+static SERVER_STACK: [u8; SERVER_STACK_SIZE] = [0; SERVER_STACK_SIZE];
 
 /// Outcome of a single test, mirroring the kselftest PASS/FAIL/SKIP states.
 enum Outcome {
@@ -175,7 +176,7 @@ fn close_dev(fd: c_int) {
 
 fn fill_ep_req() -> EndpointCreate {
     let base = addr_of!(SERVER_STACK) as u64;
-    let len = size_of::<[u8; 64 * 1024]>() as u64;
+    let len = SERVER_STACK_SIZE as u64;
     EndpointCreate {
         size: size_of::<EndpointCreate>() as u32,
         flags: RT_IPC_RUST_EP_SERVER_CREDS,
