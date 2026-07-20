@@ -63,6 +63,15 @@ TLS/GS bases are saved and restored; FPU/SIMD, PKRU and CET shadow-stack state
 require distinct policy and are handled when user-mode server dispatch is wired
 up.
 
+The same abstraction is implemented on arm64 (PC/SP and TPIDR_EL0), RISC-V
+(PC/SP and the x4/tp thread pointer) and 32-bit ARM (PC/SP and the TPIDRURO /
+TPIDRURW TLS registers).  Each architecture selects ``HAVE_RT_IPC`` once it
+provides ``rt_ipc_arch_enter_server()`` / ``rt_ipc_arch_return()`` under
+``arch/<arch>/kernel/rt_ipc.c`` with the saved-state container in
+``arch/<arch>/include/asm/rt_ipc.h``.  As with x86-64, extended state
+(FP/SIMD/SVE/vector, pointer authentication, MTE, etc.) is deferred to the
+user-mode server dispatch milestone.
+
 Scheduling attribute inheritance
 ================================
 

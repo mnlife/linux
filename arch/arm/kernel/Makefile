@@ -103,4 +103,6 @@ obj-$(CONFIG_HAVE_ARM_SMCCC)	+= smccc-call.o
 
 obj-$(CONFIG_GENERIC_CPU_VULNERABILITIES) += spectre.o
 
+obj-$(CONFIG_RT_IPC)		+= rt_ipc.o
+
 always-$(KBUILD_BUILTIN) := vmlinux.lds
