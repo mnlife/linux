@@ -9,6 +9,13 @@ use std::os::unix::io::AsRawFd;
 
 use rt_ipc::{raw, Device, EndpointConfig};
 
+// Errno values are stable across the Linux target architectures this suite
+// runs on; name them so the assertions are self-documenting (the crate is
+// deliberately dependency-free, so there is no `libc` to borrow them from).
+const EINVAL: i32 = 22;
+const EMSGSIZE: i32 = 90;
+const EOPNOTSUPP: i32 = 95;
+
 extern "C" fn server_entry() {}
 
 fn dev_or_skip() -> Option<Device> {
@@ -38,12 +45,12 @@ fn endpoint_validation_when_present() {
     // Wrong size => EINVAL.
     let err =
         raw::endpoint_create(&dev, 1, rt_ipc::EP_SERVER_CREDS, entry, top, len, 4).unwrap_err();
-    assert_eq!(err.raw_os_error(), Some(22));
+    assert_eq!(err.raw_os_error(), Some(EINVAL));
 
     // Unknown flag => EINVAL.
     let err = raw::endpoint_create(&dev, raw::ENDPOINT_CREATE_SIZE, 0x8000, entry, top, len, 4)
         .unwrap_err();
-    assert_eq!(err.raw_os_error(), Some(22));
+    assert_eq!(err.raw_os_error(), Some(EINVAL));
 
     // Zero concurrency => EINVAL.
     let err = raw::endpoint_create(
@@ -56,7 +63,7 @@ fn endpoint_validation_when_present() {
         0,
     )
     .unwrap_err();
-    assert_eq!(err.raw_os_error(), Some(22));
+    assert_eq!(err.raw_os_error(), Some(EINVAL));
 }
 
 #[test]
@@ -71,13 +78,13 @@ fn connect_and_call_when_present() {
 
     // Oversized payload => EMSGSIZE (90).
     let err = raw::call(&conn, raw::CALL_SIZE, 0, 0, 1u64 << 30, 0, 0, -1).unwrap_err();
-    assert_eq!(err.raw_os_error(), Some(90));
+    assert_eq!(err.raw_os_error(), Some(EMSGSIZE));
 
     // Well-formed call: clean completion or EOPNOTSUPP (95).
     let mut reply = [0u8; 16];
     match conn.call(b"ping", &mut reply) {
         Ok(_) => {}
-        Err(rt_ipc::Error::Io(e)) if e.raw_os_error() == Some(95) => {}
+        Err(rt_ipc::Error::Io(e)) if e.raw_os_error() == Some(EOPNOTSUPP) => {}
         Err(e) => panic!("unexpected call error: {e}"),
     }
 }

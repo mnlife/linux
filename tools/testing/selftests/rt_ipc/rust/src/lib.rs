@@ -414,6 +414,9 @@ impl Connection {
         timeout_ms: i32,
         flags: u32,
     ) -> Result<usize> {
+        // Fail fast on obviously out-of-range payloads.  This is a usability
+        // optimisation mirroring the kernel's RT_IPC_MAX_PAYLOAD bound, not a
+        // security boundary: the kernel re-validates every length itself.
         if send.len() > MAX_PAYLOAD || recv.len() > MAX_PAYLOAD {
             return Err(Error::PayloadTooLarge);
         }

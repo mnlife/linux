@@ -27,5 +27,7 @@ path = "src/bin/rt_ipc_client.rs"
 name = "rt_ipc_test"
 path = "src/bin/rt_ipc_test.rs"
 
+# Reference/test crate: opt-level 2 keeps release builds fast to compile while
+# still optimised enough for the example server/client and KTAP runner.
 [profile.release]
 opt-level = 2
