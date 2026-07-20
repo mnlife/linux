@@ -24,7 +24,12 @@
 
 static char server_stack[64 * 1024];
 
-/* A dummy server entry address; never actually invoked in the foundation. */
+/*
+ * A dummy server entry address used only to supply a valid function pointer to
+ * the ENDPOINT_CREATE ioctl. It is intentionally empty and never actually
+ * invoked, because the call path returns -EOPNOTSUPP in the foundation (the
+ * partial context switch that would jump here is not yet wired up).
+ */
 static void server_entry(void)
 {
 }
