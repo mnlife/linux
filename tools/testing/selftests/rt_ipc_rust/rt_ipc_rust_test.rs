@@ -20,11 +20,10 @@ use std::process::ExitCode;
 use std::ptr::addr_of;
 
 // Minimal libc surface.  std already links against the system C library, so we
-// only need to declare the few calls used to talk to the control device.
-type c_int = i32;
-type c_char = i8;
-type c_void = core::ffi::c_void;
-type c_ulong = u64;
+// only need to declare the few calls used to talk to the control device.  The
+// C integer widths are taken from core::ffi so the ioctl request argument
+// matches the platform's `unsigned long` (e.g. 32-bit on 32-bit arm).
+use core::ffi::{c_char, c_int, c_ulong, c_void};
 
 extern "C" {
     fn open(path: *const c_char, flags: c_int) -> c_int;
