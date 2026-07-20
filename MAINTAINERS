@@ -23611,6 +23611,7 @@ F:	include/uapi/linux/rt_ipc_rust.h
 F:	ipc/rt_ipc/
 F:	ipc/rt_ipc_rust/
 F:	tools/testing/selftests/rt_ipc/
+F:	tools/testing/selftests/rt_ipc_rust/
 
 RTL2830 MEDIA DRIVER
 L:	linux-media@vger.kernel.org
