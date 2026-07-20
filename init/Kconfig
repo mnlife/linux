@@ -535,6 +535,8 @@ config CROSS_MEMORY_ATTACH
 
 source "ipc/rt_ipc/Kconfig"
 
+source "ipc/rt_ipc_rust/Kconfig"
+
 config AUDIT
 	bool "Auditing support"
 	depends on NET

@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# rt_ipc_rust: Rust reimplementation of the migrating-thread real-time IPC.
+#
+
+config RT_IPC_RUST
+	tristate "Real-time IPC (migrating-thread model), Rust reimplementation"
+	depends on RUST
+	depends on MMU
+	help
+	  rt_ipc_rust is a Rust counterpart to the C RT_IPC subsystem.  It
+	  reproduces the same object model -- reference-counted endpoints
+	  registered by servers, client connections bound to an endpoint and a
+	  synchronous migrating-thread call path -- using the kernel's Rust
+	  abstractions, and exposes it through the /dev/rt_ipc_rust control
+	  device.
+
+	  Objects are identified by integer handles managed in a global table
+	  rather than by anonymous-inode file descriptors, because the Rust VFS
+	  layer does not yet provide anon-inode / SCM_RIGHTS fd passing.  As in
+	  the C foundation, the low-level partial context switch into the server
+	  is not yet wired up, so RT_IPC_RUST_CALL performs the full setup and
+	  then returns -EOPNOTSUPP.
+
+	  To compile this as a module, choose M here: the module will be called
+	  rt_ipc_rust.
+
+	  If unsure, say N.

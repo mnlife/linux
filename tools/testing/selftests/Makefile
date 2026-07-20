@@ -105,6 +105,7 @@ TARGETS += riscv
 TARGETS += rlimits
 TARGETS += rseq
 TARGETS += rt_ipc
+TARGETS += rt_ipc_rust
 TARGETS += rtc
 TARGETS += rust
 TARGETS += sched_ext

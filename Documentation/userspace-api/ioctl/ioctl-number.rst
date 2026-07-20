@@ -114,6 +114,7 @@ Code  Seq#    Include File                                             Comments
 '8'   all                                                              SNP8023 advanced NIC card
                                                                        <mailto:mcr@solidum.com>
 '9'   00-0F  uapi/linux/rt_ipc.h                                       Real-time IPC (migrating-thread model)
+'9'   10-1F  uapi/linux/rt_ipc_rust.h                                  Real-time IPC (migrating-thread model), Rust reimplementation
 ';'   64-7F  linux/vfio.h
 ';'   80-FF  linux/iommufd.h
 '='   00-3f  uapi/linux/ptp_clock.h                                    <mailto:richardcochran@gmail.com>

@@ -9,6 +9,7 @@ rt_ipc: real-time IPC (migrating-thread model)
 
    design
    uapi
+   rust
 
 rt_ipc is a high-performance, real-time inter-process communication mechanism
 based on the *migrating-thread* model.  Instead of waking a separate server

@@ -23607,7 +23607,9 @@ F:	arch/x86/kernel/rt_ipc.c
 F:	include/linux/rt_ipc.h
 F:	include/trace/events/rt_ipc.h
 F:	include/uapi/linux/rt_ipc.h
+F:	include/uapi/linux/rt_ipc_rust.h
 F:	ipc/rt_ipc/
+F:	ipc/rt_ipc_rust/
 F:	tools/testing/selftests/rt_ipc/
 
 RTL2830 MEDIA DRIVER
