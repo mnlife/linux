@@ -38,3 +38,23 @@ config RT_IPC_DEBUGFS
 	  in-flight counters under /sys/kernel/debug/rt_ipc for introspection.
 
 	  If unsure, say Y.
+
+config RT_IPC_RUST
+	bool "Real-time IPC (migrating-thread model), Rust implementation"
+	depends on RUST
+	depends on MMU
+	depends on !RT_IPC
+	select ANON_INODES
+	help
+	  Rust rewrite of the migrating-thread real-time IPC subsystem.  It
+	  registers the same /dev/rt_ipc control device and endpoint/connection
+	  ioctl uAPI as the C implementation (CONFIG_RT_IPC), reimplemented on
+	  top of the kernel crate (miscdevice, reference-counted objects,
+	  anon-inode fds and the user-copy helpers).
+
+	  This is an alternative to CONFIG_RT_IPC and is mutually exclusive with
+	  it; enable exactly one.  As with the C foundation, the architecture
+	  partial context switch is a follow-up, so a well-formed RT_IPC_CALL is
+	  accounted and then refused with EOPNOTSUPP.
+
+	  If unsure, say N.
