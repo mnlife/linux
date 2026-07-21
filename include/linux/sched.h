@@ -78,6 +78,7 @@ struct rcu_node;
 struct reclaim_state;
 struct root_domain;
 struct rq;
+struct rt_ipc_task;
 struct sched_attr;
 struct sched_dl_entity;
 struct seq_file;
@@ -1258,6 +1259,11 @@ struct task_struct {
 	 * under preempt_disable().
 	 */
 	struct task_struct		*blocked_donor;
+
+#ifdef CONFIG_RT_IPC
+	/* Per-task migrating-thread (rt_ipc) state; NULL until first call. */
+	struct rt_ipc_task		*rt_ipc;
+#endif
 
 #ifdef CONFIG_DETECT_HUNG_TASK_BLOCKER
 	/*

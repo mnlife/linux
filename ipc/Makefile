@@ -9,4 +9,6 @@ obj-$(CONFIG_SYSVIPC_SYSCTL) += ipc_sysctl.o
 obj-$(CONFIG_POSIX_MQUEUE) += mqueue.o msgutil.o
 obj-$(CONFIG_IPC_NS) += namespace.o
 obj-$(CONFIG_POSIX_MQUEUE_SYSCTL) += mq_sysctl.o
+obj-$(CONFIG_RT_IPC) += rt_ipc/
+obj-$(CONFIG_RT_IPC_RUST) += rt_ipc/
 

@@ -20,6 +20,7 @@
 #include <linux/sched/numa_balancing.h>
 #include <linux/sched/stat.h>
 #include <linux/sched/task.h>
+#include <linux/rt_ipc.h>
 #include <linux/sched/task_stack.h>
 #include <linux/sched/cputime.h>
 #include <linux/sched/ext.h>
@@ -537,6 +538,7 @@ void free_task(struct task_struct *tsk)
 #endif
 	release_user_cpus_ptr(tsk);
 	scs_release(tsk);
+	rt_ipc_task_exit(tsk);
 
 #ifndef CONFIG_THREAD_INFO_IN_TASK
 	/*
@@ -2247,6 +2249,8 @@ __latent_entropy struct task_struct *copy_process(
 
 	p->blocked_on = NULL; /* not blocked yet */
 	p->blocked_donor = NULL; /* nobody is boosting p yet */
+
+	rt_ipc_task_init(p);
 
 #ifdef CONFIG_BCACHE
 	p->sequential_io	= 0;

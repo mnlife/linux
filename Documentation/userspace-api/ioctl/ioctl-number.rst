@@ -113,6 +113,7 @@ Code  Seq#    Include File                                             Comments
              kernel/power/user.c
 '8'   all                                                              SNP8023 advanced NIC card
                                                                        <mailto:mcr@solidum.com>
+'9'   00-0F  uapi/linux/rt_ipc.h                                       Real-time IPC (migrating-thread model)
 ';'   64-7F  linux/vfio.h
 ';'   80-FF  linux/iommufd.h
 '='   00-3f  uapi/linux/ptp_clock.h                                    <mailto:richardcochran@gmail.com>

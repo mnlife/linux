@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-2.0
+[package]
+name = "rt_ipc"
+version = "0.1.0"
+edition = "2021"
+description = "Rust userspace reference implementation and tests for rt_ipc"
+license = "GPL-2.0"
+publish = false
+
+# Dependency-free on purpose: the crate talks to /dev/rt_ipc through the libc
+# symbols already linked by the Rust std runtime, so it builds and runs in a
+# fully offline environment (no crates.io access required).
+
+[lib]
+name = "rt_ipc"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rt_ipc_server"
+path = "src/bin/rt_ipc_server.rs"
+
+[[bin]]
+name = "rt_ipc_client"
+path = "src/bin/rt_ipc_client.rs"
+
+[[bin]]
+name = "rt_ipc_test"
+path = "src/bin/rt_ipc_test.rs"
+
+# Reference/test crate: opt-level 2 keeps release builds fast to compile while
+# still optimised enough for the example server/client and KTAP runner.
+[profile.release]
+opt-level = 2
