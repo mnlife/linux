@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: GPL-2.0
+#
+# Cargo workspace for the rt_ipc (real-time IPC, migrating-thread model)
+# userspace reference library, demo and test suite.
+#
+# These crates are intentionally dependency-free (std only) so that they can be
+# built and run inside a minimal selftest environment without network access.
+
+[workspace]
+resolver = "2"
+members = [
+    "rt_ipc",
+    "userdemo",
+    "usertest",
+]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

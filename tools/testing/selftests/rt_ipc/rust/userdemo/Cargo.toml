@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-2.0
+[package]
+name = "userdemo"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0"
+description = "rt_ipc demo: a migrating-thread RPC server and client"
+
+[dependencies]
+rt_ipc = { path = "../rt_ipc" }
+
+[[bin]]
+name = "rt_ipc_server"
+path = "src/server.rs"
+
+[[bin]]
+name = "rt_ipc_client"
+path = "src/client.rs"

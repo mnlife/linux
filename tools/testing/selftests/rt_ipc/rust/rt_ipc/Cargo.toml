@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-2.0
+[package]
+name = "rt_ipc"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0"
+description = "Userspace reference library for the rt_ipc migrating-thread IPC mechanism"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]

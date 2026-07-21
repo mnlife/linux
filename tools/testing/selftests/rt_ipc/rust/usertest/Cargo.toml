@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: GPL-2.0
+[package]
+name = "usertest"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0"
+description = "rt_ipc correctness test suite and rt_ipc-vs-sockets benchmark"
+
+[dependencies]
+rt_ipc = { path = "../rt_ipc" }
+
+[[bin]]
+name = "rt_ipc_test"
+path = "src/main.rs"
