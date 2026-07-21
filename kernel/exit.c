@@ -45,6 +45,7 @@
 #include <linux/mutex.h>
 #include <linux/futex.h>
 #include <linux/pipe_fs_i.h>
+#include <linux/rt_ipc.h>
 #include <linux/audit.h> /* for audit_free() */
 #include <linux/resource.h>
 #include <linux/task_io_accounting_ops.h>
@@ -1001,6 +1002,7 @@ void __noreturn do_exit(long code)
 
 	exit_sem(tsk);
 	exit_shm(tsk);
+	rt_ipc_task_exit(tsk);
 	exit_files(tsk);
 	exit_fs(tsk);
 	if (group_dead)

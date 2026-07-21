@@ -42,6 +42,7 @@ kernel.
    Driver APIs <driver-api/index>
    Subsystems <subsystem-apis>
    Locking <locking/index>
+   IPC <ipc/index>
 
 Development tools and processes
 ===============================

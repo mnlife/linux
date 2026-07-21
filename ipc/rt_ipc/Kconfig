@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: GPL-2.0
+
+config RT_IPC
+	bool "Real-time migrating-thread IPC (rt_ipc)"
+	depends on X86_64
+	depends on RUST
+	help
+	  rt_ipc is a real-time inter-process communication mechanism based on
+	  the migrating-thread model (Ford & Lepreau, USENIX 1994).  Instead of
+	  dispatching a remote procedure call to a separate server thread — as
+	  the static two-thread model, Android Binder and local sockets do — the
+	  client's own thread migrates into the server address space and runs the
+	  handler with the client's scheduling attributes.  Only the address
+	  space and a small subset of CPU state are switched; the scheduler is
+	  not involved.
+
+	  Because the server code executes with the client's priority, the
+	  classic priority-inversion problem cannot arise and no proxy-execution
+	  machinery is required.  This yields significantly lower and more
+	  predictable RPC latency than thread-handoff IPC.
+
+	  The mechanism is implemented in Rust (endpoint registry and policy in a
+	  small, unit-tested core) with a thin, arch-specific C/asm layer for the
+	  partial context switch.  It adds three syscalls: rt_ipc_register,
+	  rt_ipc_invoke and rt_ipc_return.
+
+	  Userspace reference library, demo and tests live under
+	  tools/testing/selftests/rt_ipc/.
+
+	  If unsure, say N.

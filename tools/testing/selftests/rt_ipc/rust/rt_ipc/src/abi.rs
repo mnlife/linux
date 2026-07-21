@@ -17,9 +17,9 @@
 ///   static two-thread model and proxy-execution designs).
 /// * [`SYS_RT_IPC_RETURN`] — a server publishes its reply and blocks to
 ///   receive the next request (the classic "reply-and-receive" fast path).
-pub const SYS_RT_IPC_REGISTER: i64 = 468;
-pub const SYS_RT_IPC_INVOKE: i64 = 469;
-pub const SYS_RT_IPC_RETURN: i64 = 470;
+pub const SYS_RT_IPC_REGISTER: i64 = 472;
+pub const SYS_RT_IPC_INVOKE: i64 = 473;
+pub const SYS_RT_IPC_RETURN: i64 = 474;
 
 /// Maximum length, in bytes, of an endpoint name (excluding the NUL byte).
 pub const RT_IPC_NAME_MAX: usize = 63;
