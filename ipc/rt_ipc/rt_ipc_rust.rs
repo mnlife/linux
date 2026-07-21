@@ -42,7 +42,7 @@ use core::sync::atomic::{AtomicPtr, Ordering};
 use kernel::prelude::*;
 use kernel::sync::{new_spinlock, Arc, SpinLock};
 
-use rt_ipc_core::{CoreError, Registry};
+use rt_ipc_core::{errno, CoreError, Registry};
 
 module! {
     type: RtIpcModule,
@@ -98,7 +98,7 @@ where
     F: FnOnce(&mut Registry) -> core::result::Result<R, CoreError>,
 {
     let ptr = REGISTRY.load(Ordering::Acquire);
-    let reg = NonNull::new(ptr).ok_or(19 /* ENODEV */)?;
+    let reg = NonNull::new(ptr).ok_or(errno::ENODEV)?;
     // SAFETY: while `ptr` is non-null the owning `Arc` in the live module keeps
     // the `SpinLock<Registry>` allocated; the spinlock provides the required
     // synchronisation for concurrent syscalls.
@@ -119,7 +119,7 @@ where
 #[no_mangle]
 pub unsafe extern "C" fn rt_ipc_rs_register(name: *const u8, name_len: usize, owner: u64) -> i64 {
     if name.is_null() && name_len != 0 {
-        return -(14i64); // EFAULT
+        return -(errno::EFAULT as i64);
     }
     // SAFETY: the caller guarantees `name`/`name_len` describe a valid slice.
     let bytes = unsafe { core::slice::from_raw_parts(name, name_len) };

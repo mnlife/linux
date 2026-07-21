@@ -51,6 +51,27 @@ pub const RT_IPC_ENDPOINT_INVALID: u64 = u64::MAX;
 /// [`CoreError::TooDeep`] instead of risking a stack overflow.
 pub const RT_IPC_MAX_DEPTH: u32 = 32;
 
+/// Errno values shared between the policy core and the kernel glue layer.
+///
+/// Keeping them in one place avoids magic numbers at the C ABI boundary
+/// (`rt_ipc_rust.rs`) and in [`CoreError::to_errno`].
+pub mod errno {
+    /// Invalid argument.
+    pub const EINVAL: i32 = 22;
+    /// Message too long.
+    pub const EMSGSIZE: i32 = 90;
+    /// Endpoint already registered.
+    pub const EEXIST: i32 = 17;
+    /// No such endpoint / owner.
+    pub const ESRCH: i32 = 3;
+    /// Invocation nesting too deep.
+    pub const ELOOP: i32 = 40;
+    /// Bad address.
+    pub const EFAULT: i32 = 14;
+    /// Registry not available (module not loaded).
+    pub const ENODEV: i32 = 19;
+}
+
 /// Errors produced by the core logic.  These map 1:1 onto `-errno` values in
 /// the kernel glue layer (see the mapping in [`CoreError::to_errno`]).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -71,11 +92,11 @@ impl CoreError {
     /// Standard `errno` value (positive) for this error.
     pub fn to_errno(self) -> i32 {
         match self {
-            CoreError::NameInvalid => 22, // EINVAL
-            CoreError::MsgTooLarge => 90, // EMSGSIZE
-            CoreError::Exists => 17,      // EEXIST
-            CoreError::NoEndpoint => 3,   // ESRCH
-            CoreError::TooDeep => 40,     // ELOOP
+            CoreError::NameInvalid => errno::EINVAL,
+            CoreError::MsgTooLarge => errno::EMSGSIZE,
+            CoreError::Exists => errno::EEXIST,
+            CoreError::NoEndpoint => errno::ESRCH,
+            CoreError::TooDeep => errno::ELOOP,
         }
     }
 }

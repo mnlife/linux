@@ -405,7 +405,12 @@ fn serve_socket(listener: UnixListener, handler: Arc<Handler>, stop: &StopFlag) 
                     }));
                 }
                 Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => {
-                    std::thread::sleep(std::time::Duration::from_millis(1));
+                    // Poll the stop flag between accepts.  A modest interval
+                    // keeps idle CPU wakeups negligible while still shutting
+                    // down promptly; connections are long-lived (keep-alive),
+                    // so the one-off accept latency is immaterial for a test
+                    // reference transport and does not warrant an epoll loop.
+                    std::thread::sleep(std::time::Duration::from_millis(10));
                 }
                 Err(e) => return Err(e.into()),
             }
